@@ -1,20 +1,22 @@
-import os
-import sys
-import logging
+from CNNClassifier.utils.common import (
+    read_yaml,
+    create_directories,
+    load_json,
+    save_bin,
+    load_bin,
+    get_size,
+    decode_image,
+    encode_image_to_base64
+)
 
-logging_str = "[%(asctime)s: %(levelname)s: %(module)s]: %(message)s"  # Removed extra bracket
+# Adding this function for the DataIngestion class
+def unzip_file(file_path, extract_path):
+    """Unzip a file to the specified path
 
-log_dir = "logs"
-log_filepath = os.path.join(log_dir, "running_logs.log")
-os.makedirs(log_dir, exist_ok=True)
-
-logging.basicConfig(
-    level=logging.INFO,
-    format=logging_str,
-    handlers=[
-        logging.FileHandler(log_filepath),
-        logging.StreamHandler(sys.stdout)  # Fixed capitalization: streamHandler -> StreamHandler
-    ]
-)  # Changed curly brace to parenthesis
-
-logger = logging.getLogger("cnnClassifierLogger")  # Fixed typo: cmn -> cnn (consistent with your setup.py)
+    Args:
+        file_path (Path): Path to the zip file
+        extract_path (Path): Path to extract the zip file
+    """
+    import zipfile
+    with zipfile.ZipFile(file_path, 'r') as zip_ref:
+        zip_ref.extractall(extract_path)
